@@ -16,6 +16,7 @@ nuget Serilog.Sinks.Console ~> 4.0
 nuget System.Reactive.Linq ~> 5.0
 
 // FsClr.Tests
+nuget Expecto.FsCheck ~> 9.0
 nuget altcover ~> 8.2
 nuget Microsoft.NET.Test.Sdk ~> 16.11 prerelease
 nuget YoloDev.Expecto.TestSdk ~> 0.12

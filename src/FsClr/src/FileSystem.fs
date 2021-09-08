@@ -22,14 +22,12 @@ module FileSystem =
 
         let changedStream =
             AsyncSeq.subscribeEvent watcher.Changed (fun event -> FileSystemChange.Changed event.FullPath)
-        //            |> AsyncSeq.bufferByTime 100
-//            |> AsyncSeq.choose Array.tryLast
-
-        let createdStream =
-            AsyncSeq.subscribeEvent watcher.Created (fun event -> FileSystemChange.Created event.FullPath)
 
         let deletedStream =
             AsyncSeq.subscribeEvent watcher.Deleted (fun event -> FileSystemChange.Deleted event.FullPath)
+
+        let createdStream =
+            AsyncSeq.subscribeEvent watcher.Created (fun event -> FileSystemChange.Created event.FullPath)
 
         let renamedStream =
             AsyncSeq.subscribeEvent
@@ -42,8 +40,8 @@ module FileSystem =
         let stream =
             [
                 changedStream
-                createdStream
                 deletedStream
+                createdStream
                 renamedStream
                 errorStream
             ]
