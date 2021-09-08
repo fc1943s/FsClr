@@ -8,6 +8,7 @@
         <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="src\Core.fs" />
         <Compile Include="src\Logger.fs" />
         <Compile Include="src\FileSystem.fs" />
         <Compile Include="src\Cli.fs" />
