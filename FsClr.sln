@@ -1,0 +1,39 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "repo", "repo", "{AC1CE2EB-72D2-480C-889B-C4940CBC5578}"
+	ProjectSection(SolutionItems) = preProject
+		paket.dependencies = paket.dependencies
+		README.md = README.md
+		.config/dotnet-tools.json = .config/dotnet-tools.json
+		.github/workflows/build.yml = .github/workflows/build.yml
+		.gitignore = .gitignore
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{74A00DAC-A1C6-400D-8181-30373D536EB9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Run Configurations", "Run Configurations", "{3598B239-B2BD-440B-B534-8007D49B898B}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FsClr", "src\FsClr\FsClr.fsproj", "{A29E8C09-4035-4A82-AD99-97BDF12101F2}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FsClr.Tests", "src\FsClr.Tests\FsClr.Tests.fsproj", "{388D23A4-61E1-4E73-BE08-20B13DCD5CD3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A29E8C09-4035-4A82-AD99-97BDF12101F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A29E8C09-4035-4A82-AD99-97BDF12101F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A29E8C09-4035-4A82-AD99-97BDF12101F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A29E8C09-4035-4A82-AD99-97BDF12101F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{388D23A4-61E1-4E73-BE08-20B13DCD5CD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{388D23A4-61E1-4E73-BE08-20B13DCD5CD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{388D23A4-61E1-4E73-BE08-20B13DCD5CD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{388D23A4-61E1-4E73-BE08-20B13DCD5CD3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A29E8C09-4035-4A82-AD99-97BDF12101F2} = {74A00DAC-A1C6-400D-8181-30373D536EB9}
+		{388D23A4-61E1-4E73-BE08-20B13DCD5CD3} = {74A00DAC-A1C6-400D-8181-30373D536EB9}
+	EndGlobalSection
+EndGlobal

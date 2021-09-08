@@ -1,0 +1,23 @@
+name: build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+          include-prerelease: true
+
+      - shell: pwsh
+        run: cd src/FsClr; ./pack.ps1
+
+      - run: dotnet nuget add source https://nuget.pkg.github.com/${{ github.actor }}/index.json --name github
+      - run: dotnet nuget push src/FsClr/bin/Release/*.nupkg --source github --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate

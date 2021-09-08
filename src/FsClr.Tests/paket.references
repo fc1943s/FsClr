@@ -1,0 +1,5 @@
+FSharp.Core
+
+altcover
+Microsoft.NET.Test.Sdk
+YoloDev.Expecto.TestSdk
