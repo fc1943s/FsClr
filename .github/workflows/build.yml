@@ -17,6 +17,8 @@ jobs:
           include-prerelease: true
 
       - shell: pwsh
+        env:
+          GITHUB_READ_PACKAGES_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: cd src/FsClr; ./pack.ps1
 
       - run: dotnet nuget add source https://nuget.pkg.github.com/${{ github.actor }}/index.json --name github
