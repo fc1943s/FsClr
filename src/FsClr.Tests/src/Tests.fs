@@ -10,9 +10,18 @@ open FsClr.FileSystem
 
 
 module Tests =
+    let sortEvent event =
+        match event with
+        | Error _ -> 0
+        | Created _ -> 1
+        | Changed _ -> 2
+        | Renamed (_oldPath, _) -> 3
+        | Deleted _ -> 4
+
     let formatEvents events =
         events
         |> Seq.toList
+        |> List.sortBy (snd >> sortEvent)
         |> List.choose
             (fun (ticks, event) ->
                 match event with
@@ -21,7 +30,6 @@ module Tests =
                 | Created path -> Some (ticks, Path.GetFileName path, nameof Created)
                 | Deleted path -> Some (ticks, Path.GetFileName path, nameof Deleted)
                 | Renamed (_oldPath, path) -> Some (ticks, Path.GetFileName path, nameof Renamed))
-        |> List.sortBy (fun (ticks, _path, _event) -> ticks)
 
     let config =
         { FsCheckConfig.defaultConfig with
@@ -36,7 +44,7 @@ module Tests =
                 testList
                     "watch"
                     [
-                        testProperty "Addition is commutative" (fun a b -> a + b = b + a)
+                        testProperty "test" (fun a b -> a + b = b + a)
 
                         let testEvents write =
                             let path = ensureTempSessionDirectory ()
@@ -63,10 +71,6 @@ module Tests =
 
                             let events = formatEvents events
 
-                            let eventList =
-                                events
-                                |> List.map (fun (_, path, event) -> path, event)
-
                             let eventMap =
                                 events
                                 |> List.map (fun (ticks, path, event) -> path, (event, ticks))
@@ -82,7 +86,12 @@ module Tests =
                                         path, event)
                                 |> Map.ofList
 
-                            eventList, eventMap
+                            let eventList =
+                                events
+                                |> List.map (fun (_ticks, path, event) -> path, event)
+                                |> List.sortBy fst
+
+                            eventMap, eventList
 
                         test "create and delete" {
                             let write path =
@@ -98,7 +107,7 @@ module Tests =
                                         File.Delete filePath
                                 }
 
-                            let eventList, eventMap = testEvents write
+                            let eventMap, eventList = testEvents write
 
                             eventList
                             |> Expect.sequenceEqual
@@ -106,15 +115,14 @@ module Tests =
                                 [
                                     "file1.txt", nameof Created
                                     "file1.txt", nameof Changed
+                                    "file1.txt", nameof Deleted
 
                                     "file2.txt", nameof Created
                                     "file2.txt", nameof Changed
+                                    "file2.txt", nameof Deleted
 
                                     "file3.txt", nameof Created
                                     "file3.txt", nameof Changed
-
-                                    "file1.txt", nameof Deleted
-                                    "file2.txt", nameof Deleted
                                     "file3.txt", nameof Deleted
                                 ]
 
@@ -147,7 +155,7 @@ module Tests =
                                         File.Delete filePath
                                 }
 
-                            let eventList, eventMap = testEvents write
+                            let eventMap, eventList = testEvents write
 
                             eventList
                             |> Expect.sequenceEqual
@@ -155,14 +163,12 @@ module Tests =
                                 [
                                     "file1.txt", nameof Created
                                     "file1.txt", nameof Changed
+                                    "file1.txt", nameof Changed
+                                    "file1.txt", nameof Deleted
 
                                     "file2.txt", nameof Created
                                     "file2.txt", nameof Changed
-
-                                    "file1.txt", nameof Changed
                                     "file2.txt", nameof Changed
-
-                                    "file1.txt", nameof Deleted
                                     "file2.txt", nameof Deleted
                                 ]
 
@@ -195,7 +201,7 @@ module Tests =
                                         File.Delete filePath2
                                 }
 
-                            let eventList, eventMap = testEvents write
+                            let eventMap, eventList = testEvents write
 
                             eventList
                             |> Expect.sequenceEqual
@@ -208,9 +214,9 @@ module Tests =
                                     "file2.txt", nameof Changed
 
                                     "file_1.txt", nameof Renamed
-                                    "file_2.txt", nameof Renamed
-
                                     "file_1.txt", nameof Deleted
+
+                                    "file_2.txt", nameof Renamed
                                     "file_2.txt", nameof Deleted
                                 ]
 
