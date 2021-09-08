@@ -21,7 +21,7 @@ module Tests =
                 | Created path -> Some (ticks, Path.GetFileName path, nameof Created)
                 | Deleted path -> Some (ticks, Path.GetFileName path, nameof Deleted)
                 | Renamed (_oldPath, path) -> Some (ticks, Path.GetFileName path, nameof Renamed))
-        |> List.sort
+        |> List.sortBy (fun (ticks, _path, _event) -> ticks)
 
     let config =
         { FsCheckConfig.defaultConfig with
