@@ -12,8 +12,8 @@
         <Compile Include="src\Logger.fs" />
         <Compile Include="src\FileSystem.fs" />
         <Compile Include="src\Cli.fs" />
-        <Content Include="pack.ps1">
-            <Pack>false</Pack>
+        <Content Include="scripts\pack.ps1">
+          <Pack>false</Pack>
         </Content>
         <Content Include="paket.references" />
         <Content Include="paket.template" />

@@ -2,6 +2,7 @@ namespace FsClr
 
 open System
 open System.IO
+open System.Reflection
 open FSharp.Control
 open FsCore
 
@@ -15,6 +16,8 @@ module FileSystem =
         | Renamed of oldPath: string * path: string
 
     let inline watch path =
+        let getLocals () = $"path={path} {getLocals ()}"
+
         let watcher = new FileSystemWatcher (Path = path, EnableRaisingEvents = true, IncludeSubdirectories = true)
 
         let changedStream =
@@ -49,6 +52,7 @@ module FileSystem =
         let disposable =
             Object.newDisposable
                 (fun () ->
+                    Logger.logDebug (fun () -> "Disposing watch stream") getLocals
                     watcher.EnableRaisingEvents <- false
                     watcher.Dispose ())
 
@@ -65,3 +69,18 @@ module FileSystem =
                 do! Async.Sleep (TimeSpan.FromSeconds 1.)
                 return! waitForStream path
         }
+
+    let inline ensureTempSessionDirectory () =
+        let tempFolder =
+            Path.GetTempPath ()
+            </> Assembly.GetEntryAssembly().GetName().Name
+            </> string (Guid.newTicksGuid ())
+
+        let result = Directory.CreateDirectory tempFolder
+
+        let getLocals () =
+            $"tempFolder={tempFolder} result.Exists={result.Exists} {getLocals ()}"
+
+        Logger.logDebug (fun () -> "FileSystem.ensureTempSessionDirectory") getLocals
+
+        tempFolder

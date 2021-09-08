@@ -2,6 +2,7 @@ namespace FsClr
 
 
 open System
+open System.IO
 open System.Threading.Tasks
 open FSharp.Control
 open System.Reactive.Linq
@@ -9,10 +10,13 @@ open FSharp.Control.Tasks.V2
 open FsCore
 
 
+[<AutoOpen>]
+module Operators =
+    let inline (</>) a b = Path.Combine (a, b)
+
 module Async =
     let inline startAsTask ct fn : Task =
         upcast Async.StartAsTask (fn, cancellationToken = ct)
-
 
     let inline map fn op =
         async {
