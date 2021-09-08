@@ -30,6 +30,8 @@ module Tests =
                 | Created path -> Some (ticks, Path.GetFileName path, nameof Created)
                 | Deleted path -> Some (ticks, Path.GetFileName path, nameof Deleted)
                 | Renamed (_oldPath, path) -> Some (ticks, Path.GetFileName path, nameof Renamed))
+        |> List.sortBy (fun (_, path, _) -> path)
+        |> List.distinctBy (fun (_, path, event) -> path, event)
 
     let config =
         { FsCheckConfig.defaultConfig with
@@ -89,7 +91,6 @@ module Tests =
                             let eventList =
                                 events
                                 |> List.map (fun (_ticks, path, event) -> path, event)
-                                |> List.sortBy fst
 
                             eventMap, eventList
 
@@ -163,11 +164,9 @@ module Tests =
                                 [
                                     "file1.txt", nameof Created
                                     "file1.txt", nameof Changed
-                                    "file1.txt", nameof Changed
                                     "file1.txt", nameof Deleted
 
                                     "file2.txt", nameof Created
-                                    "file2.txt", nameof Changed
                                     "file2.txt", nameof Changed
                                     "file2.txt", nameof Deleted
                                 ]
