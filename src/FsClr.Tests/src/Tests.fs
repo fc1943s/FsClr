@@ -59,7 +59,7 @@ module Tests =
                             let run () =
                                 async {
                                     let! child = watch () |> Async.StartChild
-                                    do! Async.Sleep 60
+                                    do! Async.Sleep 70
                                     do! write path |> Async.AwaitTask
                                     do! child
                                 }
