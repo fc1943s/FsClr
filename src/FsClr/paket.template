@@ -10,3 +10,4 @@ files
     *.fsproj ==> fable
     paket.references ==> fable
     src/*.fs ==> fable/src
+    scripts/*.ps1 ==> fable/scripts

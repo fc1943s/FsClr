@@ -15,6 +15,7 @@
         <Content Include="scripts\pack.ps1">
           <Pack>false</Pack>
         </Content>
+        <Content Include="scripts\core.ps1" />
         <Content Include="paket.references" />
         <Content Include="paket.template" />
     </ItemGroup>
