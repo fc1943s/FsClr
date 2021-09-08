@@ -2,7 +2,6 @@ namespace FsClr
 
 open System
 open System.IO
-open System.Reflection
 open FSharp.Control
 open FsCore
 
@@ -61,7 +60,7 @@ module FileSystem =
                 return new FileStream (path, FileMode.Open, FileAccess.Write)
             with
             | _ ->
-                let getLocals = $"path={path} {getLocals ()}"
+                let getLocals () = $"path={path} {getLocals ()}"
                 Logger.logWarning (fun () -> "Error opening file for writing. Waiting...") getLocals
                 do! Async.Sleep (TimeSpan.FromSeconds 1.)
                 return! waitForStream path

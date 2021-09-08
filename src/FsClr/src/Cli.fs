@@ -1,12 +1,7 @@
 namespace FsClr
 
 open System
-open System.IO
 open System.Reflection
-open Argu
-open FSharp.Control
-open Serilog
-open FsCore
 open Argu
 
 
@@ -29,4 +24,3 @@ module Cli =
             )
 
         parser.ParseCommandLine args
-
