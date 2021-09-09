@@ -15,6 +15,15 @@ module FileSystem =
         | Deleted of path: string
         | Renamed of oldPath: string * path: string
 
+    type FileSystemChange with
+        static member inline Path event =
+            match event with
+            | Error _ -> None, None
+            | Changed path -> None, Some path
+            | Created path -> None, Some path
+            | Deleted path -> None, Some path
+            | Renamed (oldPath, path) -> Some oldPath, Some path
+
     let inline watch path =
         let getLocals () = $"path={path} {getLocals ()}"
 
