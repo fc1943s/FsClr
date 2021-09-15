@@ -16,7 +16,7 @@ module FileSystem =
         | Renamed of oldPath: string * path: string
 
     type FileSystemChange with
-        static member inline Path event =
+        static member Path event =
             match event with
             | Error _ -> None, None
             | Changed path -> None, Some path
@@ -24,7 +24,7 @@ module FileSystem =
             | Deleted path -> None, Some path
             | Renamed (oldPath, path) -> Some oldPath, Some path
 
-    let inline watch path =
+    let watch path =
         let getLocals () = $"path={path} {getLocals ()}"
 
         let watcher = new FileSystemWatcher (Path = path, EnableRaisingEvents = true, IncludeSubdirectories = true)
@@ -77,7 +77,7 @@ module FileSystem =
                 return! waitForStream path
         }
 
-    let inline ensureTempSessionDirectory () =
+    let ensureTempSessionDirectory () =
         let tempFolder =
             Path.GetTempPath ()
             </> Assembly.GetEntryAssembly().GetName().Name

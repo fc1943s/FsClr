@@ -8,36 +8,36 @@ open Serilog.Sinks.SpectreConsole
 
 module Logger =
     let mutable count = 0
-    let inline logError fn getLocals =
+    let logError fn getLocals =
         if true then
             count <- count + 1
             Log.Error $"{fn ()} {getLocals ()}"
 
-    let inline logWarning fn getLocals =
+    let logWarning fn getLocals =
         if true then
             count <- count + 1
             Log.Warning $"{count}. {fn ()} {getLocals ()}"
 
-    let inline logInfo fn getLocals =
+    let logInfo fn getLocals =
         if true then
             count <- count + 1
             Log.Information $"{count}. {fn ()} {getLocals ()}"
 
-    let inline logDebug fn getLocals =
+    let logDebug fn getLocals =
         if true then
             count <- count + 1
             Log.Debug $"{count}. {fn ()} {getLocals ()}"
 
-    let inline logTrace fn getLocals =
+    let logTrace fn getLocals =
         if true then
             count <- count + 1
             Log.Verbose $"{count}. {fn ()} {getLocals ()}"
 
-    let inline seq x =
+    let seq x =
         let items = x |> Seq.map string |> String.concat ","
         $"[{items}]"
 
-    let inline init () =
+    let init () =
         Log.Logger <-
             LoggerConfiguration()
                 .Enrich.FromLogContext()

@@ -15,28 +15,28 @@ module Operators =
     let inline (</>) a b = Path.Combine (a, b)
 
 module Async =
-    let inline startAsTask ct fn : Task =
+    let startAsTask ct fn : Task =
         upcast Async.StartAsTask (fn, cancellationToken = ct)
 
-    let inline map fn op =
+    let map fn op =
         async {
             let! x = op
             let value = fn x
             return value
         }
 
-    let inline runWithTimeout timeout fn =
+    let runWithTimeout timeout fn =
         try
             Async.RunSynchronously (fn, timeout)
         with
         | :? TimeoutException -> printfn $"Async timeout reached ({timeout})"
         | e -> raise e
 
-    let inline initAsyncSeq op = AsyncSeq.initAsync 1L (fun _ -> op)
+    let initAsyncSeq op = AsyncSeq.initAsync 1L (fun _ -> op)
 
 
 module AsyncSeq =
-    let inline subscribeEvent (event: IEvent<'H, 'A>) map =
+    let subscribeEvent (event: IEvent<'H, 'A>) map =
         Observable
             .FromEventPattern<'H, 'A>(event.AddHandler, event.RemoveHandler)
             .Select (fun event -> DateTime.Now.Ticks, (map event.EventArgs))
@@ -44,7 +44,7 @@ module AsyncSeq =
 
 
 module Task =
-    let inline ignore (t: Task<unit []>) =
+    let ignore (t: Task<unit []>) =
         task {
             let! _tasks = t
             ()

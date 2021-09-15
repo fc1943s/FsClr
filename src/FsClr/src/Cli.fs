@@ -6,7 +6,7 @@ open Argu
 
 
 module Cli =
-    let inline parseArgs<'T when 'T :> IArgParserTemplate> args =
+    let parseArgs<'T when 'T :> IArgParserTemplate> args =
         let errorHandler =
             ProcessExiter (
                 colorizer =
