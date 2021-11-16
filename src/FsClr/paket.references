@@ -1,6 +1,5 @@
 FSharp.Core
 
-TaskBuilder.fs
 Argu
 FsCore
 FSharp.Control.AsyncSeq

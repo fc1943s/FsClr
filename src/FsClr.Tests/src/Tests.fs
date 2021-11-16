@@ -5,7 +5,6 @@ open System.IO
 open Expecto
 open Expecto.Flip
 open FSharp.Control
-open FSharp.Control.Tasks.V2
 open FsClr.FileSystem
 
 

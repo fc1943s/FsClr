@@ -6,7 +6,6 @@ open System.IO
 open System.Threading.Tasks
 open FSharp.Control
 open System.Reactive.Linq
-open FSharp.Control.Tasks.V2
 open FsCore
 
 
