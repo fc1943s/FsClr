@@ -2,7 +2,7 @@ STORAGE: NONE
 RESTRICTION: || (== net5.0) (== net6.0)
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    altcover (8.2.828)
+    altcover (8.2.830)
     Argu (6.1.1)
       FSharp.Core (>= 4.3.2)
       System.Configuration.ConfigurationManager (>= 4.4)
@@ -34,7 +34,7 @@ NUGET
     Newtonsoft.Json (13.0.1)
     NuGet.Frameworks (6.0)
     Serilog (2.10)
-    Serilog.Sinks.Console (4.0.1-dev-00879)
+    Serilog.Sinks.Console (4.0.1)
       Serilog (>= 2.10)
     Serilog.Sinks.SpectreConsole (0.1.1)
       FSharp.Core (>= 5.0)

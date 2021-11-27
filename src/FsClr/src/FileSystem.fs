@@ -25,23 +25,32 @@ module FileSystem =
             | Renamed (oldPath, path) -> Some oldPath, Some path
 
     let watch path =
-        let getLocals () = $"path={path} {getLocals ()}"
+        let fullPath = Path.GetFullPath path
+        let getLocals () = $"fullPath={fullPath} {getLocals ()}"
 
-        let watcher = new FileSystemWatcher (Path = path, EnableRaisingEvents = true, IncludeSubdirectories = true)
+        let watcher = new FileSystemWatcher (Path = fullPath, EnableRaisingEvents = true, IncludeSubdirectories = true)
+
+        let getEventPath (path: string) = path.Trim().Replace (fullPath, "")
 
         let changedStream =
-            AsyncSeq.subscribeEvent watcher.Changed (fun event -> FileSystemChange.Changed event.FullPath)
+            AsyncSeq.subscribeEvent
+                watcher.Changed
+                (fun event -> FileSystemChange.Changed (getEventPath event.FullPath))
 
         let deletedStream =
-            AsyncSeq.subscribeEvent watcher.Deleted (fun event -> FileSystemChange.Deleted event.FullPath)
+            AsyncSeq.subscribeEvent
+                watcher.Deleted
+                (fun event -> FileSystemChange.Deleted (getEventPath event.FullPath))
 
         let createdStream =
-            AsyncSeq.subscribeEvent watcher.Created (fun event -> FileSystemChange.Created event.FullPath)
+            AsyncSeq.subscribeEvent
+                watcher.Created
+                (fun event -> FileSystemChange.Created (getEventPath event.FullPath))
 
         let renamedStream =
             AsyncSeq.subscribeEvent
                 watcher.Renamed
-                (fun event -> FileSystemChange.Renamed (event.OldFullPath, event.FullPath))
+                (fun event -> FileSystemChange.Renamed (getEventPath event.OldFullPath, getEventPath event.FullPath))
 
         let errorStream =
             AsyncSeq.subscribeEvent watcher.Error (fun event -> FileSystemChange.Error (event.GetException ()))
