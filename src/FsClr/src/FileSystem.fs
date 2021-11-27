@@ -28,7 +28,16 @@ module FileSystem =
         let fullPath = Path.GetFullPath path
         let getLocals () = $"fullPath={fullPath} {getLocals ()}"
 
-        let watcher = new FileSystemWatcher (Path = fullPath, EnableRaisingEvents = true, IncludeSubdirectories = true)
+        let watcher =
+            new FileSystemWatcher (
+                Path = fullPath,
+                NotifyFilter =
+                    (NotifyFilters.FileName
+                     ||| NotifyFilters.LastWrite
+                     ||| NotifyFilters.Size),
+                EnableRaisingEvents = true,
+                IncludeSubdirectories = true
+            )
 
         let getEventPath (path: string) = path.Trim().Replace (fullPath, "")
 
