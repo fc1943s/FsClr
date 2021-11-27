@@ -24,17 +24,14 @@ module FileSystem =
             | Deleted path -> None, Some path
             | Renamed (oldPath, path) -> Some oldPath, Some path
 
-    let watch path =
+    let watchWithFilter path filter =
         let fullPath = Path.GetFullPath path
         let getLocals () = $"fullPath={fullPath} {getLocals ()}"
 
         let watcher =
             new FileSystemWatcher (
                 Path = fullPath,
-                NotifyFilter =
-                    (NotifyFilters.FileName
-                     ||| NotifyFilters.LastWrite
-                     ||| NotifyFilters.Size),
+                NotifyFilter = filter,
                 EnableRaisingEvents = true,
                 IncludeSubdirectories = true
             )
@@ -109,3 +106,10 @@ module FileSystem =
         Logger.logDebug (fun () -> "FileSystem.ensureTempSessionDirectory") getLocals
 
         tempFolder
+
+    let watch path =
+        watchWithFilter
+            path
+            (NotifyFilters.LastWrite
+             ||| NotifyFilters.FileName
+             ||| NotifyFilters.DirectoryName)
