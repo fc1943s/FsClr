@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest ]
+        os: [ windows-latest ]
 
     steps:
       - uses: actions/checkout@v2
@@ -26,8 +26,5 @@ jobs:
           GITHUB_READ_PACKAGES_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: cd ./src/FsClr/scripts; ./pack.ps1
 
-      - if: matrix.os == 'ubuntu-latest'
-        run: dotnet nuget add source https://nuget.pkg.github.com/${{ github.actor }}/index.json --name github
-
-      - if: matrix.os == 'ubuntu-latest'
-        run: dotnet nuget push src/FsClr/bin/Release/*.nupkg --source github --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+      - run: dotnet nuget add source https://nuget.pkg.github.com/${{ github.actor }}/index.json --name github
+      - run: dotnet nuget push src/FsClr/bin/Release/*.nupkg --source github --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
