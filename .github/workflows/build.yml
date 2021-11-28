@@ -30,4 +30,4 @@ jobs:
         run: dotnet nuget add source https://nuget.pkg.github.com/${{ github.actor }}/index.json --name github
 
       - if: matrix.os == 'ubuntu-latest'
-      - run: dotnet nuget push src/FsClr/bin/Release/*.nupkg --source github --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+        run: dotnet nuget push src/FsClr/bin/Release/*.nupkg --source github --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
