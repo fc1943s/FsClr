@@ -8,6 +8,14 @@ open FsCore
 
 
 module FileSystem =
+    [<RequireQualifiedAccess>]
+    type FileSystemChangeType =
+        | Error
+        | Changed
+        | Created
+        | Deleted
+        | Renamed
+
     type FileSystemChange =
         | Error of exn: exn
         | Changed of path: string
@@ -16,13 +24,21 @@ module FileSystem =
         | Renamed of oldPath: string * path: string
 
     type FileSystemChange with
-        static member Path event =
+        static member inline Path event =
             match event with
             | Error _ -> None, None
             | Changed path -> None, Some path
             | Created path -> None, Some path
             | Deleted path -> None, Some path
             | Renamed (oldPath, path) -> Some oldPath, Some path
+
+        static member inline Type event =
+            match event with
+            | Error _ -> FileSystemChangeType.Error
+            | Changed _ -> FileSystemChangeType.Changed
+            | Created _ -> FileSystemChangeType.Created
+            | Deleted _ -> FileSystemChangeType.Deleted
+            | Renamed _ -> FileSystemChangeType.Renamed
 
     let watchWithFilter path filter =
         let fullPath = Path.GetFullPath path
@@ -110,6 +126,8 @@ module FileSystem =
     let watch path =
         watchWithFilter
             path
-            (NotifyFilters.LastWrite
-             ||| NotifyFilters.FileName
-             ||| NotifyFilters.DirectoryName)
+            (NotifyFilters.Attributes
+             ||| NotifyFilters.Security
+             ||| NotifyFilters.CreationTime
+             ||| NotifyFilters.DirectoryName
+             ||| NotifyFilters.FileName)
