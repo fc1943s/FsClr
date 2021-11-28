@@ -1,5 +1,6 @@
 namespace FsClr
 
+open System
 open System.Collections.Concurrent
 open System.IO
 open Expecto
@@ -114,12 +115,18 @@ module Tests =
                                 ""
                                 [
                                     "file1.txt", nameof Created
+                                    if Environment.OSVersion.Platform = PlatformID.Unix then
+                                        "file1.txt", nameof Changed
                                     "file1.txt", nameof Deleted
 
                                     "file2.txt", nameof Created
+                                    if Environment.OSVersion.Platform = PlatformID.Unix then
+                                        "file2.txt", nameof Changed
                                     "file2.txt", nameof Deleted
 
                                     "file3.txt", nameof Created
+                                    if Environment.OSVersion.Platform = PlatformID.Unix then
+                                        "file3.txt", nameof Changed
                                     "file3.txt", nameof Deleted
                                 ]
 
@@ -203,7 +210,12 @@ module Tests =
                                 ""
                                 [
                                     "file1.txt", nameof Created
+                                    if Environment.OSVersion.Platform = PlatformID.Unix then
+                                        "file1.txt", nameof Changed
+
                                     "file2.txt", nameof Created
+                                    if Environment.OSVersion.Platform = PlatformID.Unix then
+                                        "file2.txt", nameof Changed
 
                                     "file_1.txt", nameof Renamed
                                     "file_1.txt", nameof Deleted
@@ -216,8 +228,18 @@ module Tests =
                             |> Expect.sequenceEqual
                                 ""
                                 ([
-                                    "file1.txt", nameof Created
-                                    "file2.txt", nameof Created
+                                    "file1.txt",
+                                    if Environment.OSVersion.Platform = PlatformID.Unix then
+                                        nameof Changed
+                                    else
+                                        nameof Created
+
+                                    "file2.txt",
+                                    if Environment.OSVersion.Platform = PlatformID.Unix then
+                                        nameof Changed
+                                    else
+                                        nameof Created
+
                                     "file_1.txt", nameof Deleted
                                     "file_2.txt", nameof Deleted
                                  ]
