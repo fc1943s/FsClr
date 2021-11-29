@@ -27,5 +27,4 @@ jobs:
         run: cd ./src/FsClr/scripts; ./pack.ps1
 
       - run: dotnet nuget add source https://nuget.pkg.github.com/${{ github.actor }}/index.json --name github
-      - run: cd ./src/FsClr/bin && dir && cd Release && dir
-      - run: dotnet nuget push src/FsClr/bin/Release/*.nupkg --source github --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+      - run: dotnet nuget push "src/FsClr/bin/Release/*.nupkg" --source github --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
